@@ -8,4 +8,4 @@ CIS-350
 
 
 
-CIS-350 game source can be found [here](https://github/theHooloovoo/Space-Game)
+CIS-350 game source can be found [here](https://github.com/theHooloovoo/Space-Game)

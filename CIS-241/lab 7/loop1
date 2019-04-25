@@ -1,0 +1,4 @@
+for i in aa bb cc dd 
+do
+  echo $i
+done

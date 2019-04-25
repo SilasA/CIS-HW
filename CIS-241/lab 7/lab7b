@@ -1,0 +1,21 @@
+Script started on 2019-03-15 14:11:29-04:00 [TERM="xterm" TTY="/dev/pts/0" COLUMNS="97" LINES="46"]
+]0;agnews@eos03:~/Documents/CIS/CIS-263-241/CIS-241/lab7[agnews@eos03 lab7]$ class="CIS241 W19"
+]0;agnews@eos03:~/Documents/CIS/CIS-263-241/CIS-241/lab7[agnews@eos03 lab7]$ echo "my[K[KMy ca[Klss is[C[Cs is[C[C[C[C[C" "[C %[K$class
+My clsss is  CIS241 W19
+]0;agnews@eos03:~/Documents/CIS/CIS-263-241/CIS-241/lab7[agnews@eos03 lab7]$ grep -h "if test" f*[12]*
+if test $# -eq 0
+if test $# -eq 2
+if test $# -eq 0
+if test $# -eq 2
+]0;agnews@eos03:~/Documents/CIS/CIS-263-241/CIS-241/lab7[agnews@eos03 lab7]$ grep -[K-h "if test" f*[12]* | sort
+if test $# -eq 0
+if test $# -eq 0
+if test $# -eq 2
+if test $# -eq 2
+]0;agnews@eos03:~/Documents/CIS/CIS-263-241/CIS-241/lab7[agnews@eos03 lab7]$ grep -h "if test" f*[12]* | sort | uniq
+if test $# -eq 0
+if test $# -eq 2
+]0;agnews@eos03:~/Documents/CIS/CIS-263-241/CIS-241/lab7[agnews@eos03 lab7]$ exit
+exit
+
+Script done on 2019-03-15 14:15:44-04:00 [COMMAND_EXIT_CODE="0"]

@@ -1,0 +1,654 @@
+SQL> SET ECHO ON
+SQL> --
+SQL> -- Author: Silas Agnew, Denver DeBoer, Nicholas English
+SQL> -- Date: 16 April 2019
+SQL> -- ------------------------------------------------------------------
+SQL> -- Description:
+SQL> --
+SQL> -- DELETE TABLES
+SQL> --
+SQL> DROP TABLE Users CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> DROP TABLE Movie CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> DROP TABLE Artist CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> DROP TABLE StudioCompany CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> DROP TABLE UserReview CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> DROP TABLE WorksOn CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> DROP TABLE ContractWith CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> DROP TABLE MovieType CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> --
+SQL> CREATE TABLE Users (
+  2  	 userID int PRIMARY KEY,
+  3  	 username varchar(20) NOT NULL,
+  4  	 dateJoined varchar(20) NOT NULL
+  5  );
+
+Table created.
+
+SQL> --
+SQL> CREATE TABLE StudioCompany (
+  2  	 sName varchar(30) PRIMARY KEY,
+  3  	 sCEO varchar(30),
+  4  	 sWebsite varchar(25)
+  5  );
+
+Table created.
+
+SQL> --
+SQL> CREATE TABLE Movie (
+  2  	 movieName varchar(30) PRIMARY KEY,
+  3  	 movieLength int,
+  4  	 releaseDate varchar(20),
+  5  	 budget int,
+  6  	 prequel varchar(30) REFERENCES Movie(movieName),
+  7  	 sequel varchar(30) REFERENCES Movie(movieName),
+  8  	 studioName varchar(30) REFERENCES StudioCompany(sName),
+  9  	 CONSTRAINT UNIQ CHECK (prequel != sequel)
+ 10  );
+
+Table created.
+
+SQL> --
+SQL> CREATE TABLE Artist (
+  2  	 aID int PRIMARY KEY,
+  3  	 aName varchar(30),
+  4  	 aBirthday varchar(20),
+  5  	 aAddress varchar(30)
+  6  );
+
+Table created.
+
+SQL> --
+SQL> CREATE TABLE UserReview (
+  2  	 userID int REFERENCES Users(userID),
+  3  	 mName varchar(30) REFERENCES Movie(movieName),
+  4  	 dateReviewed varchar(20),
+  5  	 score int,
+  6  	 CONSTRAINT UR PRIMARY KEY (userID, mName, dateReviewed),
+  7  	 CONSTRAINT SC CHECK(score >= -50 AND score <= 50)
+  8  );
+
+Table created.
+
+SQL> --
+SQL> CREATE TABLE WorksOn (
+  2  	 aID int REFERENCES Artist(aID),
+  3  	 mName varchar(30) REFERENCES Movie(movieName),
+  4  	 role varchar(10),
+  5  	 CONSTRAINT AM PRIMARY KEY (aID, mName),
+  6  	 CONSTRAINT RL CHECK(role IN ('Director', 'Actor', 'Producer'))
+  7  );
+
+Table created.
+
+SQL> --
+SQL> CREATE TABLE ContractWith (
+  2  	 aID int REFERENCES Artist(aID),
+  3  	 sName varchar(30) REFERENCES StudioCompany(sName),
+  4  	 CONSTRAINT WO PRIMARY KEY (aID, sName)
+  5  );
+
+Table created.
+
+SQL> --
+SQL> CREATE TABLE MovieType (
+  2  	 movieName varchar(50) REFERENCES Movie(movieName),
+  3  	 genre varchar(15),
+  4  	 CONSTRAINT MG PRIMARY KEY (movieName, genre)
+  5  );
+
+Table created.
+
+SQL> --
+SQL> SET FEEDBACK OFF
+SQL> --
+SQL> -- INSERT DATA
+SQL> --
+SQL> --User(UserID, Username, DateJoined)
+SQL> INSERT INTO Users VALUES (01,'CoJo','5 April 2019');
+SQL> INSERT INTO Users VALUES (02,'Owen','5 April 2019');
+SQL> INSERT INTO Users VALUES (03,'Halo Reach','5 April 2019');
+SQL> INSERT INTO Users VALUES (04,'Bambi','5 April 2019');
+SQL> INSERT INTO Users VALUES (05,'cinema.uncanned','5 April 2019');
+SQL> INSERT INTO Users VALUES (06,'Pol Pot','5 April 2019');
+SQL> --
+SQL> --Studio_Company(StuName,StuCEO,Website)
+SQL> INSERT INTO StudioCompany VALUES ('Marvel Studios','Avi Arad','www.marvel.com/movies');
+SQL> INSERT INTO StudioCompany VALUES ('Universal Pictures','Ronald Meyer','www.universalpictures.com');
+SQL> INSERT INTO StudioCompany VALUES ('Element Pictures','Annette Waldron',NULL);
+SQL> INSERT INTO StudioCompany VALUES ('Wiseau Studios','Tommy Wiseau','wiseaustudios.com');
+SQL> INSERT INTO StudioCompany VALUES ('Lion''s Gate Studios','Peter Strauss','www.lionsgate.com');
+SQL> --
+SQL> --Movie(MovieName, Movie_Length, Release_Date, Budget, Prequel, Sequel,SName)
+SQL> INSERT INTO Movie VALUES ('Spider-Man Homecoming',133,'7 July 2017',175000000,NULL, NULL,'Marvel Studios');
+SQL> INSERT INTO Movie VALUES ('Willard',100,'14 March 2003',22000000,NULL,NULL,'Lion''s Gate Studios');
+SQL> INSERT INTO Movie VALUES ('The Room',99,'26 June 2003',6000000,NULL,NULL,'Wiseau Studios');
+SQL> INSERT INTO Movie VALUES ('The Killing of a Sacred Deer',121,'3 November 2017',2000000,NULL,NULL,'Element Pictures');
+SQL> INSERT INTO Movie VALUES ('Get Out',104,'24 February 2017',5000000,NULL,NULL,'Universal Pictures');
+SQL> INSERT INTO Movie VALUES ('Ant-Man and the Wasp',118,'6 July 2018',162000000,NULL, NULL,'Marvel Studios');
+SQL> INSERT INTO Movie VALUES ('Ant-Man',117,'17 July 2015',162000000,NULL, 'Ant-Man and the Wasp','Marvel Studios');
+SQL> UPDATE Movie SET prequel = 'Ant-Man' WHERE movieName = 'Ant-Man and the Wasp';
+SQL> --
+SQL> --Artist(aID, aName, aBirthday, aAddress)
+SQL> INSERT INTO Artist VALUES (11,'Tom Holland','1 June 1996','London, UK');
+SQL> INSERT INTO Artist VALUES (12,'Crispin Glover','20 April 1964','New York City, New York, USA');
+SQL> INSERT INTO Artist VALUES (13,'Barry Keoghan','17 October 1992','Dublin, Ireland');
+SQL> INSERT INTO Artist VALUES (14,'Greg Sestero','15 July 1978','Walnut Creek, California, USA');
+SQL> INSERT INTO Artist VALUES (15,'Daniel Kaluuya','24 February 1989','London, UK');
+SQL> INSERT INTO Artist VALUES (16,'Paul Rudd','6 April 1969','New Jersy, USA');
+SQL> INSERT INTO Artist VALUES (21,'Jon Watts','28 June 1981','Fountain, Colorado, USA');
+SQL> INSERT INTO Artist VALUES (22,'Glen Morgan','16 January 1947','San Francisco, California, USA');
+SQL> INSERT INTO Artist VALUES (23,'Tommy Wiseau','3 October 1955','Poznan, Poland');
+SQL> INSERT INTO Artist VALUES (24,'Yorgos Lanthimos','1 January 1973','Athens, Greece');
+SQL> INSERT INTO Artist VALUES (25,'Jordan Peele','21 February 1979','New York City, New York, USA');
+SQL> INSERT INTO Artist VALUES (26,'Peyton Reed','3 July 1964','Raleigh, North Carolina, USA');
+SQL> INSERT INTO Artist VALUES (31,'Victoria Alonso','22 December 1965','Buenos Aires, Argentina');
+SQL> INSERT INTO Artist VALUES (32,'Toby Emmerich','8 February 1963','New York City, New York, USA');
+SQL> INSERT INTO Artist VALUES (33,'Drew Caffrey','13 August 1931','Santa Monica, California, USA');
+SQL> INSERT INTO Artist VALUES (34,'Atilla Salih Yucer','12 February 1978','Bloemfontein, South Africa');
+SQL> INSERT INTO Artist VALUES (35,'Jason Blum','20 February 1969','Los Angeles, California, USA');
+SQL> INSERT INTO Artist VALUES (36,'Stan Lee','28 December 1922','Los Angeles, California, USA');
+SQL> INSERT INTO Artist VALUES (69,'Nicolas Cage','7 January 1964','Long Beach, California, USA');
+SQL> --
+SQL> --User_Review(UID,MName,DateReviewed,Score)
+SQL> INSERT INTO UserReview VALUES (01,'Spider-Man Homecoming','5 April 2019',50);
+SQL> INSERT INTO UserReview VALUES (01,'Willard','5 April 2019',-50);
+SQL> INSERT INTO UserReview VALUES (01,'The Room','5 April 2019',-37);
+SQL> INSERT INTO UserReview VALUES (01,'The Killing of a Sacred Deer','5 April 2019',26);
+SQL> INSERT INTO UserReview VALUES (01,'Get Out','5 April 2019',50);
+SQL> INSERT INTO UserReview VALUES (01,'Ant-Man and the Wasp','5 April 2019',50);
+SQL> INSERT INTO UserReview VALUES (02,'Spider-Man Homecoming','5 April 2019',-50);
+SQL> INSERT INTO UserReview VALUES (02,'Willard','5 April 2019',-50);
+SQL> INSERT INTO UserReview VALUES (02,'The Room','5 April 2019',50);
+SQL> INSERT INTO UserReview VALUES (02,'The Killing of a Sacred Deer','5 April 2019',50);
+SQL> INSERT INTO UserReview VALUES (02,'Get Out','5 April 2019',-50);
+SQL> INSERT INTO UserReview VALUES (02,'Ant-Man and the Wasp','5 April 2019',0);
+SQL> INSERT INTO UserReview VALUES (03,'The Room','5 April 2019',-25);
+SQL> INSERT INTO UserReview VALUES (03,'The Killing of a Sacred Deer','5 April 2019',-50);
+SQL> INSERT INTO UserReview VALUES (03,'Get Out','5 April 2019',19);
+SQL> INSERT INTO UserReview VALUES (03,'Ant-Man and the Wasp','5 April 2019',50);
+SQL> INSERT INTO UserReview VALUES (04,'Spider-Man Homecoming','5 April 2019',39);
+SQL> INSERT INTO UserReview VALUES (04,'Willard','5 April 2019',18);
+SQL> INSERT INTO UserReview VALUES (04,'The Room','5 April 2019',-50);
+SQL> INSERT INTO UserReview VALUES (04,'The Killing of a Sacred Deer','5 April 2019',0);
+SQL> INSERT INTO UserReview VALUES (04,'Get Out','5 April 2019',20);
+SQL> INSERT INTO UserReview VALUES (04,'Ant-Man and the Wasp','5 April 2019',0);
+SQL> INSERT INTO UserReview VALUES (05,'Spider-Man Homecoming','5 April 2019',45);
+SQL> INSERT INTO UserReview VALUES (05,'Willard','5 April 2019',25);
+SQL> INSERT INTO UserReview VALUES (05,'The Room','5 April 2019',-30);
+SQL> INSERT INTO UserReview VALUES (05,'The Killing of a Sacred Deer','5 April 2019',-15);
+SQL> INSERT INTO UserReview VALUES (05,'Get Out','5 April 2019',35);
+SQL> INSERT INTO UserReview VALUES (05,'Ant-Man and the Wasp','5 April 2019',50);
+SQL> INSERT INTO UserReview VALUES (06,'Spider-Man Homecoming','5 April 2019',-19);
+SQL> INSERT INTO UserReview VALUES (06,'Willard','5 April 2019',50);
+SQL> INSERT INTO UserReview VALUES (06,'The Room','5 April 2019',50);
+SQL> INSERT INTO UserReview VALUES (06,'The Killing of a Sacred Deer','5 April 2019',30);
+SQL> INSERT INTO UserReview VALUES (06,'Get Out','5 April 2019',0);
+SQL> INSERT INTO UserReview VALUES (06,'Ant-Man and the Wasp','5 April 2019',44);
+SQL> --
+SQL> --Works_On(aID,MName,Role)
+SQL> INSERT INTO WorksOn VALUES (11,'Spider-Man Homecoming','Actor');
+SQL> INSERT INTO WorksOn VALUES (21,'Spider-Man Homecoming','Director');
+SQL> INSERT INTO WorksOn VALUES (31,'Spider-Man Homecoming','Producer');
+SQL> INSERT INTO WorksOn VALUES (36,'Spider-Man Homecoming','Actor');
+SQL> INSERT INTO WorksOn VALUES (12,'Willard','Actor');
+SQL> INSERT INTO WorksOn VALUES (22,'Willard','Director');
+SQL> INSERT INTO WorksOn VALUES (32,'Willard','Producer');
+SQL> INSERT INTO WorksOn VALUES (13,'The Killing of a Sacred Deer','Actor');
+SQL> INSERT INTO WorksOn VALUES (23,'The Killing of a Sacred Deer','Director');
+SQL> INSERT INTO WorksOn VALUES (33,'The Killing of a Sacred Deer','Producer');
+SQL> INSERT INTO WorksOn VALUES (14,'The Room','Actor');
+SQL> INSERT INTO WorksOn VALUES (24,'The Room','Director');
+SQL> INSERT INTO WorksOn VALUES (34,'The Room','Producer');
+SQL> INSERT INTO WorksOn VALUES (15,'Get Out','Actor');
+SQL> INSERT INTO WorksOn VALUES (25,'Get Out','Director');
+SQL> INSERT INTO WorksOn VALUES (35,'Get Out','Producer');
+SQL> INSERT INTO WorksOn VALUES (16,'Ant-Man and the Wasp','Actor');
+SQL> INSERT INTO WorksOn VALUES (26,'Ant-Man and the Wasp','Director');
+SQL> INSERT INTO WorksOn VALUES (36,'Ant-Man and the Wasp','Producer');
+SQL> INSERT INTO WorksOn VALUES (31,'Ant-Man and the Wasp','Producer');
+SQL> INSERT INTO WorksOn VALUES (16,'Ant-Man','Actor');
+SQL> INSERT INTO WorksOn VALUES (26,'Ant-Man','Director');
+SQL> INSERT INTO WorksOn VALUES (36,'Ant-Man','Producer');
+SQL> INSERT INTO WorksOn VALUES (31,'Ant-Man','Producer');
+SQL> --
+SQL> --Contract_With(aID,SName)
+SQL> INSERT INTO ContractWith VALUES (11,'Marvel Studios');
+SQL> INSERT INTO ContractWith VALUES (12,'Lion''s Gate Studios');
+SQL> INSERT INTO ContractWith VALUES (13,'Element Pictures');
+SQL> INSERT INTO ContractWith VALUES (14,'Wiseau Studios');
+SQL> INSERT INTO ContractWith VALUES (15,'Universal Pictures');
+SQL> INSERT INTO ContractWith VALUES (16,'Marvel Studios');
+SQL> INSERT INTO ContractWith VALUES (21,'Marvel Studios');
+SQL> INSERT INTO ContractWith VALUES (22,'Lion''s Gate Studios');
+SQL> INSERT INTO ContractWith VALUES (23,'Element Pictures');
+SQL> INSERT INTO ContractWith VALUES (24,'Wiseau Studios');
+SQL> INSERT INTO ContractWith VALUES (25,'Universal Pictures');
+SQL> INSERT INTO ContractWith VALUES (26,'Marvel Studios');
+SQL> INSERT INTO ContractWith VALUES (31,'Marvel Studios');
+SQL> INSERT INTO ContractWith VALUES (32,'Lion''s Gate Studios');
+SQL> INSERT INTO ContractWith VALUES (33,'Element Pictures');
+SQL> INSERT INTO ContractWith VALUES (34,'Wiseau Studios');
+SQL> INSERT INTO ContractWith VALUES (35,'Universal Pictures');
+SQL> INSERT INTO ContractWith VALUES (36,'Marvel Studios');
+SQL> --
+SQL> --MovieType(MovieName,genre)
+SQL> INSERT INTO MovieType VALUES ('Spider-Man Homecoming','Action');
+SQL> INSERT INTO MovieType VALUES ('Spider-Man Homecoming','Adventure');
+SQL> INSERT INTO MovieType VALUES ('Spider-Man Homecoming','Sci-Fi');
+SQL> INSERT INTO MovieType VALUES ('Willard','Drama');
+SQL> INSERT INTO MovieType VALUES ('Willard','Horror');
+SQL> INSERT INTO MovieType VALUES ('Willard','Sci-Fi');
+SQL> INSERT INTO MovieType VALUES ('The Room','Drama');
+SQL> INSERT INTO MovieType VALUES ('The Killing of a Sacred Deer','Drama');
+SQL> INSERT INTO MovieType VALUES ('The Killing of a Sacred Deer','Mystery');
+SQL> INSERT INTO MovieType VALUES ('The Killing of a Sacred Deer','Thriller');
+SQL> INSERT INTO MovieType VALUES ('Get Out','Horror');
+SQL> INSERT INTO MovieType VALUES ('Get Out','Mystery');
+SQL> INSERT INTO MovieType VALUES ('Get Out','Thriller');
+SQL> INSERT INTO MovieType VALUES ('Ant-Man and the Wasp','Action');
+SQL> INSERT INTO MovieType VALUES ('Ant-Man and the Wasp','Adventure');
+SQL> INSERT INTO MovieType VALUES ('Ant-Man and the Wasp','Comedy');
+SQL> INSERT INTO MovieType VALUES ('Ant-Man','Action');
+SQL> INSERT INTO MovieType VALUES ('Ant-Man','Adventure');
+SQL> INSERT INTO MovieType VALUES ('Ant-Man','Comedy');
+SQL> INSERT INTO MovieType VALUES ('Ant-Man','Sci-Fi');
+SQL> --
+SQL> SET FEEDBACK ON
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --
+SQL> -- Select statements to display table values
+SQL> SELECT * FROM Users;
+
+    USERID|USERNAME            |DATEJOINED                                                               
+----------|--------------------|--------------------                                                     
+         1|CoJo                |5 April 2019                                                             
+         2|Owen                |5 April 2019                                                             
+         3|Halo Reach          |5 April 2019                                                             
+         4|Bambi               |5 April 2019                                                             
+         5|cinema.uncanned     |5 April 2019                                                             
+         6|Pol Pot             |5 April 2019                                                             
+
+6 rows selected.
+
+SQL> SELECT * FROM Movie;
+
+MOVIENAME                     |MOVIELENGTH|RELEASEDATE         |    BUDGET|PREQUEL                       
+------------------------------|-----------|--------------------|----------|------------------------------
+SEQUEL                        |STUDIONAME                                                                
+------------------------------|------------------------------                                            
+Spider-Man Homecoming         |        133|7 July 2017         | 175000000|                              
+                              |Marvel Studios                                                            
+                                                                                                         
+Willard                       |        100|14 March 2003       |  22000000|                              
+                              |Lion's Gate Studios                                                       
+                                                                                                         
+The Room                      |         99|26 June 2003        |   6000000|                              
+                              |Wiseau Studios                                                            
+                                                                                                         
+The Killing of a Sacred Deer  |        121|3 November 2017     |   2000000|                              
+                              |Element Pictures                                                          
+                                                                                                         
+Get Out                       |        104|24 February 2017    |   5000000|                              
+                              |Universal Pictures                                                        
+                                                                                                         
+Ant-Man and the Wasp          |        118|6 July 2018         | 162000000|Ant-Man                       
+                              |Marvel Studios                                                            
+                                                                                                         
+Ant-Man                       |        117|17 July 2015        | 162000000|                              
+Ant-Man and the Wasp          |Marvel Studios                                                            
+                                                                                                         
+
+7 rows selected.
+
+SQL> SELECT * FROM Artist;
+
+       AID|ANAME                         |ABIRTHDAY           |AADDRESS                                  
+----------|------------------------------|--------------------|------------------------------            
+        11|Tom Holland                   |1 June 1996         |London, UK                                
+        12|Crispin Glover                |20 April 1964       |New York City, New York, USA              
+        13|Barry Keoghan                 |17 October 1992     |Dublin, Ireland                           
+        14|Greg Sestero                  |15 July 1978        |Walnut Creek, California, USA             
+        15|Daniel Kaluuya                |24 February 1989    |London, UK                                
+        16|Paul Rudd                     |6 April 1969        |New Jersy, USA                            
+        21|Jon Watts                     |28 June 1981        |Fountain, Colorado, USA                   
+        22|Glen Morgan                   |16 January 1947     |San Francisco, California, USA            
+        23|Tommy Wiseau                  |3 October 1955      |Poznan, Poland                            
+        24|Yorgos Lanthimos              |1 January 1973      |Athens, Greece                            
+        25|Jordan Peele                  |21 February 1979    |New York City, New York, USA              
+        26|Peyton Reed                   |3 July 1964         |Raleigh, North Carolina, USA              
+        31|Victoria Alonso               |22 December 1965    |Buenos Aires, Argentina                   
+        32|Toby Emmerich                 |8 February 1963     |New York City, New York, USA              
+        33|Drew Caffrey                  |13 August 1931      |Santa Monica, California, USA             
+        34|Atilla Salih Yucer            |12 February 1978    |Bloemfontein, South Africa                
+        35|Jason Blum                    |20 February 1969    |Los Angeles, California, USA              
+        36|Stan Lee                      |28 December 1922    |Los Angeles, California, USA              
+        69|Nicolas Cage                  |7 January 1964      |Long Beach, California, USA               
+
+19 rows selected.
+
+SQL> SELECT * FROM StudioCompany;
+
+SNAME                         |SCEO                          |SWEBSITE                                   
+------------------------------|------------------------------|-------------------------                  
+Marvel Studios                |Avi Arad                      |www.marvel.com/movies                      
+Universal Pictures            |Ronald Meyer                  |www.universalpictures.com                  
+Element Pictures              |Annette Waldron               |                                           
+Wiseau Studios                |Tommy Wiseau                  |wiseaustudios.com                          
+Lion's Gate Studios           |Peter Strauss                 |www.lionsgate.com                          
+
+5 rows selected.
+
+SQL> SELECT * FROM UserReview;
+
+    USERID|MNAME                         |DATEREVIEWED        |     SCORE                                
+----------|------------------------------|--------------------|----------                                
+         1|Spider-Man Homecoming         |5 April 2019        |        50                                
+         1|Willard                       |5 April 2019        |       -50                                
+         1|The Room                      |5 April 2019        |       -37                                
+         1|The Killing of a Sacred Deer  |5 April 2019        |        26                                
+         1|Get Out                       |5 April 2019        |        50                                
+         1|Ant-Man and the Wasp          |5 April 2019        |        50                                
+         2|Spider-Man Homecoming         |5 April 2019        |       -50                                
+         2|Willard                       |5 April 2019        |       -50                                
+         2|The Room                      |5 April 2019        |        50                                
+         2|The Killing of a Sacred Deer  |5 April 2019        |        50                                
+         2|Get Out                       |5 April 2019        |       -50                                
+         2|Ant-Man and the Wasp          |5 April 2019        |         0                                
+         3|The Room                      |5 April 2019        |       -25                                
+         3|The Killing of a Sacred Deer  |5 April 2019        |       -50                                
+         3|Get Out                       |5 April 2019        |        19                                
+         3|Ant-Man and the Wasp          |5 April 2019        |        50                                
+         4|Spider-Man Homecoming         |5 April 2019        |        39                                
+         4|Willard                       |5 April 2019        |        18                                
+         4|The Room                      |5 April 2019        |       -50                                
+         4|The Killing of a Sacred Deer  |5 April 2019        |         0                                
+         4|Get Out                       |5 April 2019        |        20                                
+         4|Ant-Man and the Wasp          |5 April 2019        |         0                                
+         5|Spider-Man Homecoming         |5 April 2019        |        45                                
+         5|Willard                       |5 April 2019        |        25                                
+         5|The Room                      |5 April 2019        |       -30                                
+         5|The Killing of a Sacred Deer  |5 April 2019        |       -15                                
+         5|Get Out                       |5 April 2019        |        35                                
+         5|Ant-Man and the Wasp          |5 April 2019        |        50                                
+         6|Spider-Man Homecoming         |5 April 2019        |       -19                                
+         6|Willard                       |5 April 2019        |        50                                
+         6|The Room                      |5 April 2019        |        50                                
+         6|The Killing of a Sacred Deer  |5 April 2019        |        30                                
+         6|Get Out                       |5 April 2019        |         0                                
+         6|Ant-Man and the Wasp          |5 April 2019        |        44                                
+
+34 rows selected.
+
+SQL> SELECT * FROM WorksOn;
+
+       AID|MNAME                         |ROLE                                                           
+----------|------------------------------|----------                                                     
+        11|Spider-Man Homecoming         |Actor                                                          
+        21|Spider-Man Homecoming         |Director                                                       
+        31|Spider-Man Homecoming         |Producer                                                       
+        36|Spider-Man Homecoming         |Actor                                                          
+        12|Willard                       |Actor                                                          
+        22|Willard                       |Director                                                       
+        32|Willard                       |Producer                                                       
+        13|The Killing of a Sacred Deer  |Actor                                                          
+        23|The Killing of a Sacred Deer  |Director                                                       
+        33|The Killing of a Sacred Deer  |Producer                                                       
+        14|The Room                      |Actor                                                          
+        24|The Room                      |Director                                                       
+        34|The Room                      |Producer                                                       
+        15|Get Out                       |Actor                                                          
+        25|Get Out                       |Director                                                       
+        35|Get Out                       |Producer                                                       
+        16|Ant-Man and the Wasp          |Actor                                                          
+        26|Ant-Man and the Wasp          |Director                                                       
+        36|Ant-Man and the Wasp          |Producer                                                       
+        31|Ant-Man and the Wasp          |Producer                                                       
+        16|Ant-Man                       |Actor                                                          
+        26|Ant-Man                       |Director                                                       
+        36|Ant-Man                       |Producer                                                       
+        31|Ant-Man                       |Producer                                                       
+
+24 rows selected.
+
+SQL> SELECT * FROM ContractWith;
+
+       AID|SNAME                                                                                         
+----------|------------------------------                                                                
+        11|Marvel Studios                                                                                
+        12|Lion's Gate Studios                                                                           
+        13|Element Pictures                                                                              
+        14|Wiseau Studios                                                                                
+        15|Universal Pictures                                                                            
+        16|Marvel Studios                                                                                
+        21|Marvel Studios                                                                                
+        22|Lion's Gate Studios                                                                           
+        23|Element Pictures                                                                              
+        24|Wiseau Studios                                                                                
+        25|Universal Pictures                                                                            
+        26|Marvel Studios                                                                                
+        31|Marvel Studios                                                                                
+        32|Lion's Gate Studios                                                                           
+        33|Element Pictures                                                                              
+        34|Wiseau Studios                                                                                
+        35|Universal Pictures                                                                            
+        36|Marvel Studios                                                                                
+
+18 rows selected.
+
+SQL> SELECT * FROM MovieType;
+
+MOVIENAME                                         |GENRE                                                 
+--------------------------------------------------|---------------                                       
+Ant-Man                                           |Action                                                
+Ant-Man                                           |Adventure                                             
+Ant-Man                                           |Comedy                                                
+Ant-Man                                           |Sci-Fi                                                
+Ant-Man and the Wasp                              |Action                                                
+Ant-Man and the Wasp                              |Adventure                                             
+Ant-Man and the Wasp                              |Comedy                                                
+Get Out                                           |Horror                                                
+Get Out                                           |Mystery                                               
+Get Out                                           |Thriller                                              
+Spider-Man Homecoming                             |Action                                                
+Spider-Man Homecoming                             |Adventure                                             
+Spider-Man Homecoming                             |Sci-Fi                                                
+The Killing of a Sacred Deer                      |Drama                                                 
+The Killing of a Sacred Deer                      |Mystery                                               
+The Killing of a Sacred Deer                      |Thriller                                              
+The Room                                          |Drama                                                 
+Willard                                           |Drama                                                 
+Willard                                           |Horror                                                
+Willard                                           |Sci-Fi                                                
+
+20 rows selected.
+
+SQL> --
+SQL> -- QUERIES
+SQL> --
+SQL> /* Query #1
+SQL> 	For every artist who was in a movie that is a Horror film with more than 5 reviews:
+SQL> 	We find the artists name, name of the movie, studio company's name, and the average
+SQL> 	score received for a movie. We will sort by average score.
+SQL> 
+SQL> 	Completes #1, #4, #5 query types needed.
+SQL> */
+SQL> SELECT   A.aName, W.Mname, S.SName, AVG(R.Score)
+  2  FROM     Artist A, WorksOn W, StudioCompany S, UserReview R, Movie M, MovieType T
+  3  WHERE    T.genre = 'Horror' AND W.aID = A.aID AND
+  4  	      W.MName = M.MovieName AND M.StudioName = S.SName
+  5  	      AND T.movieName = M.MovieName AND R.Mname = M.MovieName
+  6  GROUP BY A.aName, W.MName, S.SName
+  7  HAVING   COUNT(*) > 4
+  8  ORDER BY AVG(R.Score);
+
+ANAME                         |MNAME                         |SNAME                         |AVG(R.SCORE)
+------------------------------|------------------------------|------------------------------|------------
+Crispin Glover                |Willard                       |Lion's Gate Studios           |        -1.4
+Glen Morgan                   |Willard                       |Lion's Gate Studios           |        -1.4
+Toby Emmerich                 |Willard                       |Lion's Gate Studios           |        -1.4
+Jason Blum                    |Get Out                       |Universal Pictures            |  12.3333333
+Jordan Peele                  |Get Out                       |Universal Pictures            |  12.3333333
+Daniel Kaluuya                |Get Out                       |Universal Pictures            |  12.3333333
+
+6 rows selected.
+
+SQL> --
+SQL> --
+SQL> --
+SQL> /* Query #2
+SQL> 	For every artist, find an artist who lives in the same location.
+SQL> 
+SQL> 	Completes #2 query type needed.
+SQL> */
+SQL> SELECT   A1.aName, A2.aName, A1.aAddress
+  2  FROM     Artist A1, Artist A2
+  3  WHERE    A1.aName != A2.aName AND A1.aAddress = A2.aAddress AND A1.aID > A2.aID
+  4  ORDER BY A1.aAddress;
+
+ANAME                         |ANAME                         |AADDRESS                                   
+------------------------------|------------------------------|------------------------------             
+Daniel Kaluuya                |Tom Holland                   |London, UK                                 
+Stan Lee                      |Jason Blum                    |Los Angeles, California, USA               
+Toby Emmerich                 |Jordan Peele                  |New York City, New York, USA               
+Toby Emmerich                 |Crispin Glover                |New York City, New York, USA               
+Jordan Peele                  |Crispin Glover                |New York City, New York, USA               
+
+5 rows selected.
+
+SQL> --
+SQL> --
+SQL> --
+SQL> /* Query #3
+SQL> 	For every artist, find the studio name via outer join query.
+SQL> 
+SQL> 	Completes #9 query type needed.
+SQL> */
+SQL> SELECT   A.aName, C.sName
+  2  FROM     Artist A LEFT JOIN ContractWith C
+  3  ON       A.aID = C.aID
+  4  ORDER BY C.sName;
+
+ANAME                         |SNAME                                                                     
+------------------------------|------------------------------                                            
+Tommy Wiseau                  |Element Pictures                                                          
+Barry Keoghan                 |Element Pictures                                                          
+Drew Caffrey                  |Element Pictures                                                          
+Glen Morgan                   |Lion's Gate Studios                                                       
+Toby Emmerich                 |Lion's Gate Studios                                                       
+Crispin Glover                |Lion's Gate Studios                                                       
+Jon Watts                     |Marvel Studios                                                            
+Paul Rudd                     |Marvel Studios                                                            
+Tom Holland                   |Marvel Studios                                                            
+Stan Lee                      |Marvel Studios                                                            
+Victoria Alonso               |Marvel Studios                                                            
+Peyton Reed                   |Marvel Studios                                                            
+Daniel Kaluuya                |Universal Pictures                                                        
+Jason Blum                    |Universal Pictures                                                        
+Jordan Peele                  |Universal Pictures                                                        
+Greg Sestero                  |Wiseau Studios                                                            
+Atilla Salih Yucer            |Wiseau Studios                                                            
+Yorgos Lanthimos              |Wiseau Studios                                                            
+Nicolas Cage                  |                                                                          
+
+19 rows selected.
+
+SQL> --
+SQL> --
+SQL> --
+SQL> /* Query #4
+SQL> 	For every artist who works on every Marvel movie, display
+SQL> 	the artist's ID, Name, and the studio's name
+SQL> 
+SQL> 	Complete #3, #6, #7, #8 query type needed.
+SQL> */
+SQL> SELECT A.aID, A.aName, C.SName
+  2  FROM Artist A, ContractWith C
+  3  Where A.aID = C.aID AND
+  4  	   NOT EXISTS((SELECT M.MovieName
+  5  		       FROM Movie M
+  6  		       WHERE M.studioName LIKE 'Marvel Studios')
+  7  		     MINUS
+  8  		     (SELECT M.MovieName
+  9  		      FROM Movie M, WorksOn W
+ 10  		      WHERE A.aID = W.aID AND
+ 11  		      W.MName = M.MovieName AND
+ 12  		      M.studioName LIKE 'Marvel Studios'));
+
+       AID|ANAME                         |SNAME                                                          
+----------|------------------------------|------------------------------                                 
+        31|Victoria Alonso               |Marvel Studios                                                 
+        36|Stan Lee                      |Marvel Studios                                                 
+
+2 rows selected.
+
+SQL> --
+SQL> -- TESTS
+SQL> --
+SQL> -- Primary Key Test
+SQL> INSERT INTO Users VALUES (01,'VladiP00','5 April 2019');
+INSERT INTO Users VALUES (01,'VladiP00','5 April 2019')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (AGNEWS.SYS_C00725146) violated 
+
+
+SQL> --
+SQL> -- Foreign Key Test
+SQL> INSERT INTO UserReview VALUES (007, 'Spider-Man Homecoming','6 April 2019', 0);
+INSERT INTO UserReview VALUES (007, 'Spider-Man Homecoming','6 April 2019', 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (AGNEWS.SYS_C00725156) violated - parent key not found 
+
+
+SQL> --
+SQL> -- Testing Constraint SC
+SQL> INSERT INTO UserReview VALUES (01,'Willard','5 April 2019', 100);
+INSERT INTO UserReview VALUES (01,'Willard','5 April 2019', 100)
+*
+ERROR at line 1:
+ORA-02290: check constraint (AGNEWS.SC) violated 
+
+
+SQL> --
+SQL> -- Testing Constraint UNIQ
+SQL> INSERT INTO Movie VALUES ('Terminator',108,'26 October 1984',6400000,'Spider-Man Homecoming','Spider-Man Homecoming','Marvel Studios');
+INSERT INTO Movie VALUES ('Terminator',108,'26 October 1984',6400000,'Spider-Man Homecoming','Spider-Man Homecoming','Marvel Studios')
+*
+ERROR at line 1:
+ORA-02290: check constraint (AGNEWS.UNIQ) violated 
+
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --
+SQL> SPOOL OFF

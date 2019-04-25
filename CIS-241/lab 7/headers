@@ -1,0 +1,25 @@
+# that are given as arguments and display those header filenames
+
+echo
+if test $# -eq 0 
+then
+   echo "usage: headers f1 f2 ..."
+   echo
+   exit
+fi
+
+if test -e temp
+then
+   rm temp
+fi
+
+for i in $*
+do
+   grep -w "#include" $i >> temp
+done
+
+num=$(sort temp | uniq | tee temp1 | wc -l)
+cat temp1
+echo
+echo "$num header files found"
+echo

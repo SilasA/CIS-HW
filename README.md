@@ -5,6 +5,11 @@ Classes currently archived:
 CIS-162
 CIS-163
 CIS-350
+CIS-353
+CIS-263
+CIS-241
+CIS-465
+CIS-351
 
 
 

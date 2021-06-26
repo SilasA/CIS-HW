@@ -1,0 +1,42 @@
+==748902== Memcheck, a memory error detector
+==748902== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==748902== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==748902== Command: ./a.out Samples/beemovie.txt Samples/sample-text-file.txt Samples/image.jpg
+==748902== Parent PID: 734953
+==748902== 
+==748905== 
+==748905== HEAP SUMMARY:
+==748905==     in use at exit: 0 bytes in 0 blocks
+==748905==   total heap usage: 5 allocs, 5 frees, 81,380 bytes allocated
+==748905== 
+==748905== All heap blocks were freed -- no leaks are possible
+==748905== 
+==748905== For lists of detected and suppressed errors, rerun with: -s
+==748905== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==748904== 
+==748904== HEAP SUMMARY:
+==748904==     in use at exit: 0 bytes in 0 blocks
+==748904==   total heap usage: 4 allocs, 4 frees, 81,372 bytes allocated
+==748904== 
+==748904== All heap blocks were freed -- no leaks are possible
+==748904== 
+==748904== For lists of detected and suppressed errors, rerun with: -s
+==748904== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==748903== 
+==748903== HEAP SUMMARY:
+==748903==     in use at exit: 0 bytes in 0 blocks
+==748903==   total heap usage: 3 allocs, 3 frees, 81,368 bytes allocated
+==748903== 
+==748903== All heap blocks were freed -- no leaks are possible
+==748903== 
+==748903== For lists of detected and suppressed errors, rerun with: -s
+==748903== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==748902== 
+==748902== HEAP SUMMARY:
+==748902==     in use at exit: 0 bytes in 0 blocks
+==748902==   total heap usage: 8 allocs, 8 frees, 73,868 bytes allocated
+==748902== 
+==748902== All heap blocks were freed -- no leaks are possible
+==748902== 
+==748902== For lists of detected and suppressed errors, rerun with: -s
+==748902== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

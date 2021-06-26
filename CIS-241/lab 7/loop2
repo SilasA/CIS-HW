@@ -1,6 +1,0 @@
-let i=0
-for arg in $@ 
-do
-  let i+=1
-  echo "\$$i $arg"
-done

@@ -1,6 +1,0 @@
-line="this is a test"
-set $line
-for i 
-do
-  echo $i
-done

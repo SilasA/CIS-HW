@@ -1,0 +1,12 @@
+1. /home/agnews
+
+2. 2 Levels
+
+3.  - .vimrc
+    - .bashrc
+    - .kshrc
+
+4. The /home directory contains all the home directories of all the users in the system.
+
+5. Absolute: /home/agnews/.vimrc
+   Relative: ./.vimrc

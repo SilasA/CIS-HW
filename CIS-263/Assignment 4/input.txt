@@ -1,0 +1,5 @@
+This is a test file.
+Water water 23 45 WATER wAtER
+! @ ? are not included.
+The Test file is
+Word word word

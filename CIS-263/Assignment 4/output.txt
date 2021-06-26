@@ -1,0 +1,11 @@
+ 3
+are 1
+file 2
+included 1
+is 2
+not 1
+test 2
+the 1
+this 1
+water 4
+word 3

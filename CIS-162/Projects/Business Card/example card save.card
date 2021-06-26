@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<card x="" y="" width="500" height="300">
+	<color>
+		<r>0</r>
+		<g>255</g>
+		<b>0</b>
+		<a>255</a>
+	</color>
+	<logo x="50" y="50" width="" height="">
+	<!-- All locations with parent logo are relative to logo position -->
+		<rect>
+			<x>50</x>
+			<y>50</y>
+			<width>100</width>
+			<height>100</height>
+			<color>
+				<r>255</r>
+				<g>255</g>
+				<b>255</b>
+				<a>255</a>
+			</color>
+		</rect>
+		<oval>
+			<x>0</x>
+			<y>0</y>
+			<width>41</width>
+			<height>254</height>
+			<color>
+				<r>255</r>
+				<g>0</g>
+				<b>0</b>
+				<a>255</a>
+			</color>
+		</oval>
+		<line>
+			<!-- Line <x> and <y> tags MUST be in this order -->
+			<x>52</x>
+			<y>527</y>
+			<x2>15</x2>
+			<y2>277</y2>
+			<color>
+				<r>0</r>
+				<g>0</g>
+				<b>255</b>
+				<a>255</a>
+			</color>
+		</line>
+		<text>
+			<x>12</x>
+			<y>85</y>
+			<font size="15" style="italics">Comic Sans MS</font>
+			<content>Hello world</content>
+			<color>
+				<r>0</r>
+				<g>255</g>
+				<b>255</b>
+				<a>255</a>
+			</color>
+		</text>
+	</logo>
+	<rect>
+		<x>50</x>
+		<y>50</y>
+		<width>100</width>
+		<height>100</height>
+		<color>
+			<r>255</r>
+			<g>255</g>
+			<b>255</b>
+			<a>255</a>
+		</color>
+	</rect>
+	<oval>
+		<x>0</x>
+		<y>0</y>
+		<width>41</width>
+		<height>254</height>
+		<color>
+			<r>255</r>
+			<g>0</g>
+			<b>0</b>
+			<a>255</a>
+		</color>
+	</oval>
+	<line>
+		<x>52</x>
+		<y>527</y>
+		<x2>15</x2>
+		<y2>277</y2>
+		<color>
+			<r>0</r>
+			<g>0</g>
+			<b>255</b>
+			<a>255</a>
+		</color>
+	</line>
+	<text>
+		<x>12</x>
+		<y>85</y>
+		<font size="15" style="italics">Comic Sans MS</font>
+		<content>Hello world</content>
+		<color>
+			<r>0</r>
+			<g>255</g>
+			<b>255</b>
+			<a>255</a>
+		</color>
+	</text>
+	<pic>
+		<x>0</x>
+		<y>0</y>
+		<width></width>
+		<height></height>
+		<path>D:\Projects\CIS\CIS-162-HW\Projects\Business Card\YB Photo small.jpg</path>
+	</pic>
+</card>

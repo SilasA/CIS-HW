@@ -1,0 +1,39 @@
+	public static void main(String[] args)
+	{
+		MyPhone phone = new MyPhone("John Doe", "0102030405");
+		
+		phone.chargeBattery(50);
+		phone.streamAudio(100);
+		phone.sendText("Hello");
+		phone.readText();
+		phone.printStatement();
+	}
+	
+	public static void main(String[] args)
+	{
+		MyPhone phone = new MyPhone("Alice Cooper", "6666666666");
+		
+		phone.chargeBattery(90);
+		phone.streamAudio(750);
+		phone.chargeBattery(20);
+		phone.sendText("Schools out, Forever!");
+		phone.readText();
+		phone.printStatement();
+	}
+	
+	public static void main(String[] args)
+	{
+		MyPhone phone = new MyPhone("Stephe Stephanson", "5555555555");
+		
+		phone.chargeBattery(120);
+		phone.streamAudio(100);
+		phone.sendText("Hello?");
+		phone.sendText("Hello?");
+		phone.sendText("Hello?");
+		phone.sendText("Hello?");
+		phone.readText();
+		phone.readText();
+		phone.readText();
+		phone.readText();
+		phone.printStatement();
+	}
